@@ -18,9 +18,6 @@ module.exports = mongoose.model('users',
     password: {
       type: String,
       required: true
-    },
-    created_at: {
-      type: Date,
-      default: Date.now
     }
-  }));
+  }, { timestamps: true })
+);
