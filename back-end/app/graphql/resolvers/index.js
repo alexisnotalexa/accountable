@@ -1,6 +1,6 @@
 const User = require('../../models/user');
 
-const users = async () => {
+const getAllUsers = async () => {
   try {
     const users = await User.find();
     return users.map(user => {
@@ -16,7 +16,25 @@ const users = async () => {
   }
 };
 
-const createUser = async (params) => {
+const getUser = async ({ id }) => {
+  try {
+    return await User.findOne({ id });
+  } catch (error) {
+    throw error;
+  }
+};
+
+const login = async (params) => {
+  try {
+    const { email, password } = params.user;
+    console.log('email', email);
+    console.log('password', password);
+  } catch (error) {
+    throw error;
+  }
+};
+
+const signup = async (params) => {
   try {
     const { firstName, lastName, email, password } = params.user;
     const user = new User({
@@ -33,6 +51,8 @@ const createUser = async (params) => {
 };
 
 module.exports = {
-  users,
-  createUser
+  getAllUsers,
+  getUser,
+  login,
+  signup
 };
