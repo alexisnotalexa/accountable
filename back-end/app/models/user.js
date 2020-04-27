@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-module.exports = mongoose.model('users', 
+module.exports = mongoose.model('User', 
   new Schema({
-    first_name: {
+    firstName: {
       type: String,
       required: true
     },
-    last_name: {
+    lastName: {
       type: String,
       required: true
     },
