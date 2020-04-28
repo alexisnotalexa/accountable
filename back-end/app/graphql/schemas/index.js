@@ -1,6 +1,6 @@
-const { buildSchema } = require('graphql');
+const { gql } = require('apollo-server-express');
 
-module.exports = buildSchema(`
+module.exports = gql`
   type AuthPayload {
     token: String
     user: User
@@ -32,14 +32,9 @@ module.exports = buildSchema(`
     getAllUsers: [User!]
     getUser(id: ID!): User
   }
-
+  
   type Mutation {
     signup(user: NewUserInput): User
     login(user: LoginUserInput): User
   }
-
-  schema {
-    query: Query
-    mutation: Mutation
-  }
-`);
+`;
