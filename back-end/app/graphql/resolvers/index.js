@@ -14,7 +14,7 @@ module.exports = {
           }
         });
       } catch (error) {
-        throw error;
+        throw new Error(error);
       }
     },
     getUser: async (_, { id }) => {
@@ -22,7 +22,7 @@ module.exports = {
         const user = await User.findOne({ _id: id });
         return user;
       } catch (error) {
-        throw error;
+        throw new Error(error);
       }
     }
   },
@@ -32,7 +32,7 @@ module.exports = {
         console.log('email', email);
         console.log('password', password);
       } catch (error) {
-        throw error;
+        throw new Error(error);
       }
     },
     signup: async (_, args) => {
@@ -47,7 +47,7 @@ module.exports = {
         const newUser = await user.save();
         return { ...newUser._doc, _id: newUser.id };
       } catch (error) {
-        throw error;
+        throw new Error(error);
       }
     }
   }
