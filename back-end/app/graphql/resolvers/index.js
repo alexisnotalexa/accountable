@@ -18,7 +18,8 @@ const getAllUsers = async () => {
 
 const getUser = async ({ id }) => {
   try {
-    return await User.findOne({ id });
+    const user = await User.findOne({ _id: id });
+    return user;
   } catch (error) {
     throw error;
   }
