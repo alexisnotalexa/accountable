@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+// TODO: Add custom validators and messages for required fields.
+
 module.exports = mongoose.model('User', 
   new Schema({
     firstName: {
@@ -13,7 +15,8 @@ module.exports = mongoose.model('User',
     },
     email: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     password: {
       type: String,
