@@ -69,6 +69,12 @@ module.exports = {
           name,
           createdBy
         });
+
+        // Automatically add creator to new Group
+        await GroupMember.create({
+          groupId: group._id,
+          userId: createdBy
+        });
         return group;
       } catch (error) {
         throw new Error(error);
