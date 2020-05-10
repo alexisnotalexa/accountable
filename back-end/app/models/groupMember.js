@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const GroupSchema = new Schema({
-  name: {
+const GroupMemberSchema = new Schema({
+  groupId: {
     type: String,
     required: true
   },
-  createdBy: {
+  userId: {
     type: String,
     required: true
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Task', GroupSchema);
+module.exports = mongoose.model('Task', GroupMemberSchema);
