@@ -5,6 +5,8 @@ module.exports = gql`
     _id: ID!
     name: String!
     createdBy: ID!
+    createdAt: String!
+    updatedAt: String!
   }
 
   input NewGroupInput {
@@ -20,7 +22,7 @@ module.exports = gql`
 
   extend type Mutation {
     createGroup(group: NewGroupInput): Group!
-    updateGroup(id: ID!): Group!
+    updateGroup(id: ID!, name: String): Group!
     deleteGroup(id: ID!): Group!
   }
 `;

@@ -15,14 +15,12 @@ module.exports = {
     getAllUsers: async () => {
       try {
         const users = await User.find();
-        return users.map(user => {
-          return {
-            ...user._doc,
-            _id: user.id,
-            createdAt: new Date(user._doc.createdAt).toISOString(),
-            updatedAt: new Date(user._doc.updatedAt).toISOString()
-          }
-        });
+        return users.map(user => ({
+          ...user._doc,
+          _id: user.id,
+          createdAt: new Date(user.createdAt).toISOString(),
+          updatedAt: new Date(user.updatedAt).toISOString()
+        }));
       } catch (error) {
         throw new Error(error);
       }
