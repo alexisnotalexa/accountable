@@ -23,6 +23,6 @@ module.exports = gql`
   extend type Mutation {
     createGroup(group: NewGroupInput): Group!
     updateGroup(id: ID!, name: String): Group!
-    deleteGroup(id: ID!): Group!
+    deleteGroup(id: ID!): Boolean!
   }
 `;

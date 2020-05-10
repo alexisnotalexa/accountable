@@ -2,6 +2,7 @@ const Group = require('../../models/group');
 
 module.exports = {
   Query: {
+    // need to add authorization
     getAllGroups: async () => {
       try {
         const groups = await Group.find();
@@ -17,6 +18,7 @@ module.exports = {
     }
   },
   Mutation: {
+    // need to add authorization
     createGroup: async (_, args) => {
       try {
         const { name, createdBy } = args.group;
@@ -29,18 +31,17 @@ module.exports = {
         throw new Error(error);
       }
     },
-    updateGroup: async (_, args) => {
+    updateGroup: async (_, { id, name }) => {
       try {
-        const { id, name } = args;
-        return await Group.findByIdAndUpdate(id, { name });
+         return await Group.findByIdAndUpdate(id, { name }, { new: true });
       } catch (error) {
         throw new Error(error);
       }
     },
     deleteGroup: async (_, { id }) => {
       try {
-        const result = await Group.findByIdAndDelete(id);
-        console.log(result);
+        const result = await Group.deleteOne({ _id: id });
+        return result.deletedCount === 1 ? true : false;
       } catch (error) {
         throw new Error(error);
       }

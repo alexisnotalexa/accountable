@@ -45,7 +45,7 @@ server.applyMiddleware({ app, path: '/graphql' });
 
 // DATABASE
 const URI = `mongodb+srv://${config[env].username}:${config[env].password}@accountable-ei8ox.mongodb.net/test?retryWrites=true&w=majority`;
-const OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true };
+const OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false };
 
 mongoose.connect(URI, OPTIONS)
     .then(() => {
