@@ -3,5 +3,6 @@
     "username": "your-user-name-here",
     "password": "your-password-here",
     "port": 1234
-  }
+  },
+  "SECRET": "your-secret-here"
 }
