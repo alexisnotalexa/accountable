@@ -1,4 +1,4 @@
-const { ApolloServer } = require('apollo-server-express');
+const { ApolloServer, AuthenticationError } = require('apollo-server-express');
 const bodyParser = require('body-parser');
 const config = require('./config/config.json');
 const cors = require('cors');
@@ -7,6 +7,7 @@ const express = require('express');
 const resolvers = require('./graphql/resolvers');
 const typeDefs = require('./graphql/schemas');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 // SERVER
 const app = express();
@@ -15,14 +16,29 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
+const isAuthorized = async req => {
+    const token = req.headers['x-token'];
+    if (token) {
+        try {
+            return await jwt.verify(token, config.SECRET);
+        } catch(error) {
+            throw new AuthenticationError('Your session has expired. Login again.');
+        }
+    }
+};
+
 // APOLLO-SERVER
 const server = new ApolloServer({
     typeDefs,
     resolvers,
     graphiql: true,
-    context: async () => ({
-        secret: config.SECRET
-    })
+    context: async ({ req }) => {
+        const user = await isAuthorized(req);
+        return {
+            authUser,
+            secret: config.SECRET
+        }
+    }
 });
 
 server.applyMiddleware({ app, path: '/graphql' });
