@@ -1,3 +1,5 @@
+const { combineResolvers } = require('graphql-resolvers');
+const { isAdmin } = require('./authorization');
 const User = require('../../models/user');
 const jwt = require('jsonwebtoken');
 
@@ -35,9 +37,12 @@ module.exports = {
     },
   },
   Mutation: {
-    deleteUser: async (_, { id }) => {
-      return await User.deleteOne({ id });
-    },
+    deleteUser: combineResolvers(
+      isAdmin,
+      async (_, { id }) => {
+        return await User.deleteOne({ id });
+      },
+    ),
     login: async (_, args, { secret }) => {
       try {
         const { email, password } = args.user;
