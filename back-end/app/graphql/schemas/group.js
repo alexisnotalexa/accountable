@@ -21,8 +21,10 @@ module.exports = gql`
   }
 
   extend type Mutation {
+    addGroupMember(groupId: ID!, userId: ID!): Boolean!
     createGroup(group: NewGroupInput): Group!
-    updateGroup(id: ID!, name: String): Group!
     deleteGroup(id: ID!): Boolean!
+    removeGroupMember(groupId: ID!, userId: ID!): Boolean!
+    updateGroup(id: ID!, name: String): Group!
   }
 `;

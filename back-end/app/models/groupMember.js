@@ -12,4 +12,4 @@ const GroupMemberSchema = new Schema({
   }
 }, { timestamps: true });
 
-module.exports = mongoose.model('Task', GroupMemberSchema);
+module.exports = mongoose.model('GroupMember', GroupMemberSchema);
