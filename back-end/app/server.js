@@ -33,7 +33,7 @@ const server = new ApolloServer({
     resolvers,
     graphiql: true,
     context: async ({ req }) => {
-        const user = await isAuthorized(req);
+        const authUser = await isAuthorized(req);
         return {
             authUser,
             secret: config.SECRET
