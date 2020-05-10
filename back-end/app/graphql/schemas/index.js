@@ -6,6 +6,10 @@ module.exports = gql`
     user: User
   }
 
+  type Token {
+    token: String!
+  }
+
   type User {
     _id: ID!
     firstName: String!
@@ -31,10 +35,10 @@ module.exports = gql`
   type Query {
     getAllUsers: [User!]
     getUser(id: ID!): User
+    login(user: LoginUserInput): User
   }
   
   type Mutation {
-    signup(user: NewUserInput): User
-    login(user: LoginUserInput): User
+    signup(user: NewUserInput): Token!
   }
 `;
