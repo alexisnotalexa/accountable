@@ -42,7 +42,7 @@ module.exports = {
         if (!user) throw new Error('No user found with this email address.');
 
         const isMatch = await user.comparePassword(password);
-        if (isMatch) throw new Error('Invalid password.');
+        if (!isMatch) throw new Error('Invalid password.');
 
         return { token: createToken(user, secret, '1m') };
       } catch (error) {
