@@ -35,10 +35,10 @@ module.exports = gql`
   extend type Query {
     getAllUsers: [User!]
     getUser(id: ID!): User
-    login(user: LoginUserInput): User
   }
 
   extend type Mutation {
     signup(user: NewUserInput): Token!
+    login(user: LoginUserInput): Token!
   }
 `;

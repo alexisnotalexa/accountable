@@ -1,10 +1,9 @@
 const User = require('../../models/user');
 const jwt = require('jsonwebtoken');
 
-const createToken = async (user, secret, expiresIn) => {
+const createToken = (user, secret, expiresIn) => {
   const { id, email } = user;
-  console.log(user);
-  return await jwt.sign({ id, email }, secret, {
+  return jwt.sign({ id, email }, secret, {
     expiresIn
   });
 };
@@ -34,17 +33,22 @@ module.exports = {
         throw new Error(error);
       }
     },
-    login: async (_, args) => {
+  },
+  Mutation: {
+    login: async (_, args, { secret }) => {
       try {
         const { email, password } = args.user;
-        console.log('email', email);
-        console.log('password', password);
+        const user = await User.findOne({ email });
+        if (!user) throw new Error('No user found with this email address.');
+
+        const isMatch = await user.comparePassword(password);
+        if (isMatch) throw new Error('Invalid password.');
+
+        return { token: createToken(user, secret, '1m') };
       } catch (error) {
         throw new Error(error);
       }
     },
-  },
-  Mutation: {
     signup: async (_, args, { secret }) => {
       try {
         const { firstName, lastName, email, password } = args.user;
@@ -54,7 +58,6 @@ module.exports = {
           email,
           password
         });
-        console.log('signup');
         return { token: createToken(user, secret, '1m') };
       } catch (error) {
         throw new Error(error);
