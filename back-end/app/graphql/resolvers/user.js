@@ -40,7 +40,12 @@ module.exports = {
     deleteUser: combineResolvers(
       isAdmin,
       async (_, { id }) => {
-        return await User.deleteOne({ id });
+        try {
+          const result = await User.deleteOne({ _id: id });
+          return result.deletedCount === 1 ? true : false;
+        } catch (error) {
+          throw new Error(error);
+        }
       },
     ),
     login: async (_, args, { secret }) => {
@@ -52,7 +57,7 @@ module.exports = {
         const isMatch = await user.comparePassword(password);
         if (!isMatch) throw new Error('Invalid password.');
 
-        return { token: createToken(user, secret, '1m') };
+        return { token: createToken(user, secret, '5m') };
       } catch (error) {
         throw new Error(error);
       }
@@ -67,7 +72,7 @@ module.exports = {
           password,
           role
         });
-        return { token: createToken(user, secret, '1m') };
+        return { token: createToken(user, secret, '5m') };
       } catch (error) {
         throw new Error(error);
       }
