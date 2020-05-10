@@ -38,6 +38,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
+    deleteUser(id: ID!) Boolean!
     signup(user: NewUserInput): Token!
     login(user: LoginUserInput): Token!
   }

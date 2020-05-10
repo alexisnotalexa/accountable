@@ -35,6 +35,9 @@ module.exports = {
     },
   },
   Mutation: {
+    deleteUser: async (_, { id }) => {
+      return await User.deleteOne({ id });
+    },
     login: async (_, args, { secret }) => {
       try {
         const { email, password } = args.user;
@@ -51,12 +54,13 @@ module.exports = {
     },
     signup: async (_, args, { secret }) => {
       try {
-        const { firstName, lastName, email, password } = args.user;
+        const { firstName, lastName, email, password, role } = args.user;
         const user = await User.create({
           firstName,
           lastName,
           email,
-          password
+          password,
+          role
         });
         return { token: createToken(user, secret, '1m') };
       } catch (error) {
