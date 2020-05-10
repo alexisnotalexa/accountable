@@ -82,6 +82,14 @@ module.exports = {
         throw new Error(error);
       }
     },
+    removeGroupMember: async (_, { groupId, userId }) => {
+      try {
+        const result = await GroupMember.deleteOne({ groupId, userId });
+        return result.deletedCount === 1 ? true : false;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
     updateGroup: async (_, { id, name }) => {
       try {
          return await Group.findByIdAndUpdate(id, { name }, { new: true });
