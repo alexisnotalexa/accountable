@@ -50,7 +50,12 @@ module.exports = {
     },
     deleteTask: async (_, { id }) => {
       try {
+        const task = await Task.findById(id);
+        if (!task) throw new Error('This task does not exist.');
 
+        const userTasks = await UserTask.deleteMany({ taskId: task.id });
+        const result = await Task.deleteOne({ _id: task.id });
+        return userTasks.deletedCount && result.deletedCount;
       } catch (error) {
         throw new Error(error);
       }
