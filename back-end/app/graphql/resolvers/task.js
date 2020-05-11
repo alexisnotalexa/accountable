@@ -18,6 +18,22 @@ module.exports = {
       } catch (error) {
         throw new Error(error);
       }
+    },
+    getAllTasksForUser: async (_, { userId }) => {
+      try {
+        // should also include completed/completedAt
+        let taskIds = await UserTask.find({ userId });
+        taskIds = taskIds.map(task => task.taskId);
+        const tasks = await Task.find({ _id: { $in: taskIds }});
+        return tasks.map(task => ({
+          ...task._doc,
+          _id: task.id,
+          createdAt: new Date(task.createdAt).toISOString(),
+          updatedAt: new Date(task.updatedAt).toISOString()
+        }));
+      } catch (error) {
+        throw new Error(error);
+      }
     }
   },
   Mutation: {
@@ -43,7 +59,11 @@ module.exports = {
     },
     updateTask: async (_, args) => {
       try {
+        const { description, taskId } = args.task;
+        const task = await Task.findByIdAndUpdate(taskId, { description }, { new: true });
 
+        return task;
+        // Need to handle the case if they change groupId
       } catch (error) {
         throw new Error(error);
       }
@@ -55,6 +75,7 @@ module.exports = {
 
         const userTasks = await UserTask.deleteMany({ taskId: task.id });
         const result = await Task.deleteOne({ _id: task.id });
+
         return userTasks.deletedCount && result.deletedCount;
       } catch (error) {
         throw new Error(error);

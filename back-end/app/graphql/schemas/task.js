@@ -15,8 +15,9 @@ module.exports = gql`
   }
 
   input UpdateTaskInput {
+    taskId: ID!
     description: String!
-    groupId: ID!
+    groupId: ID
   }
 
   extend type Query {
