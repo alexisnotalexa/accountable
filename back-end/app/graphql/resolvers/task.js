@@ -48,8 +48,8 @@ module.exports = {
           groupId
         });
 
-        const userIds = await GroupMember.find({ groupId });
-        const newUserTasks = userIds.map(member => ({ taskId: task.id, userId: member.id }));
+        let newUserTasks = await GroupMember.find({ groupId });
+        newUserTasks = newUserTasks.map(member => ({ taskId: task.id, userId: member.id }));
         await UserTask.create(newUserTasks);
 
         return task;
@@ -57,13 +57,28 @@ module.exports = {
         throw new Error(error);
       }
     },
-    updateTask: async (_, args) => {
+    updateTask: async (_, { description, taskId }) => {
       try {
-        const { description, taskId } = args.task;
-        const task = await Task.findByIdAndUpdate(taskId, { description }, { new: true });
+        return await Task.findByIdAndUpdate(taskId, { description }, { new: true });
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    updateTaskGroup: async (_, { taskId, groupId }) => {
+      try {
+        const group = await Group.findById(groupId);
+        if (!group) throw new Error('This group does not exist.');
 
-        return task;
-        // Need to handle the case if they change groupId
+        // TODO: Debug here
+        // Delete old UserTasks
+        await UserTask.deleteMany({ taskId });
+
+        // Create new UserTasks
+        let newUserTasks = await GroupMember.find({ groupId });
+        newUserTasks = newUserTasks.map(member => ({ taskId, userId: member.id }));
+        await UserTask.create(newUserTasks);
+
+        return await Task.findByIdAndUpdate(taskId, { groupId }, { new: true });
       } catch (error) {
         throw new Error(error);
       }

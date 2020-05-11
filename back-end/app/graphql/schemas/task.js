@@ -14,12 +14,6 @@ module.exports = gql`
     groupId: ID!
   }
 
-  input UpdateTaskInput {
-    taskId: ID!
-    description: String!
-    groupId: ID
-  }
-
   extend type Query {
     getAllTasksForGroup(groupId: ID!): [Task!]
     getAllTasksForUser(userId: ID!): [Task!]
@@ -27,7 +21,8 @@ module.exports = gql`
 
   extend type Mutation {
     createTask(task: NewTaskInput): Task!
-    updateTask(task: UpdateTaskInput): Task!
+    updateTask(taskId: ID!, description: String!): Task!
+    updateTaskGroup(taskId: ID!, groupId: ID!): Task!
     deleteTask(id: ID!): Boolean!
   }
 `;
