@@ -1,4 +1,5 @@
-const userResolvers = require('./user');
 const groupResolvers = require('./group');
+const taskResolvers = require('./task');
+const userResolvers = require('./user');
 
-module.exports = [groupResolvers, userResolvers];
+module.exports = [groupResolvers, taskResolvers, userResolvers];

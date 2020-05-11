@@ -90,6 +90,7 @@ module.exports = {
     },
     removeGroupMember: async (_, { groupId, userId }) => {
       try {
+        // TODO: Can't remove task creator
         const result = await GroupMember.deleteOne({ groupId, userId });
         return result.deletedCount === 1 ? true : false;
       } catch (error) {
