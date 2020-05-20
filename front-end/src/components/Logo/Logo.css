@@ -1,0 +1,15 @@
+.logo {
+  font-family: 'Work Sans', sans-serif;
+}
+
+.logo--small {
+  width: 35px;
+  height: 30px;
+  background: crimson;
+  border-radius: 50%;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 5px;
+}
