@@ -13,3 +13,7 @@ code {
 #root {
   height: 100vh;
 }
+
+h3 {
+  font-weight: 500;
+}
