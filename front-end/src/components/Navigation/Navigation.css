@@ -1,0 +1,12 @@
+aside {
+  padding: 8px;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.navigation__logo {
+  padding: 24px;
+}

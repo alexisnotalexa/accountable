@@ -1,0 +1,50 @@
+.nav-item {
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 24px;
+  color: lightslategray;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.nav-item:hover {
+  color: darkslategray;
+}
+
+.nav-item--selected {
+  background: whitesmoke;
+  border-radius: 8px;
+  color: darkslategray;
+}
+
+.nav-item__icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: white;
+  margin-right: 8px;
+}
+
+.nav-item__label {
+  display: flex;
+  align-items: center;
+}
+
+.nav-item__notification {
+  width: 24px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: red;
+  border-radius: 8px;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+}

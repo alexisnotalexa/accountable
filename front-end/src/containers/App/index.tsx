@@ -1,19 +1,13 @@
 import React from "react";
 import "./App.css";
 
-import Logo from "../../components/Logo";
+import Navigation from "../../components/Navigation";
 
 function App() {
   return (
     <div className="App">
       <main>
-        <aside>
-          <Logo />
-          <Logo small />
-          <nav>
-            <span>Home</span>
-          </nav>
-        </aside>
+        <Navigation />
         <div className="content">
           <p>
             I'm baby edison bulb PBR&B hammock knausgaard jean shorts humblebrag
