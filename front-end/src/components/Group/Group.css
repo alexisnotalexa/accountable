@@ -1,0 +1,42 @@
+.group {
+  display: flex;
+}
+
+.group__members {
+  width: 75px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin-top: 8px;
+}
+
+.group__user {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  border: 2px solid white;
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+}
+
+.group__user--top {
+  background: chocolate;
+  z-index: 3;
+}
+
+.group__user--mid {
+  background: cadetblue;
+  z-index: 2;
+  left: -10px;
+}
+
+.group__user--bottom {
+  background: green;
+  z-index: 1;
+  left: -20px;
+}

@@ -1,6 +1,8 @@
 import React from "react";
 import "./TaskCard.css";
 
+import Group from "../Group";
+
 const TaskCard = () => {
   return (
     <div className="task-card">
@@ -11,6 +13,9 @@ const TaskCard = () => {
         bicycle rights. Meggings jean shorts tattooed, four dollar toast banh mi
         shoreditch tilde locavore intelligentsia kitsch.
       </p>
+      <div>
+        <Group members={3} />
+      </div>
     </div>
   );
 };
