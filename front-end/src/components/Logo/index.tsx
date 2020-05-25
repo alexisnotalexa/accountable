@@ -1,5 +1,5 @@
-import React from 'react';
-import './Logo.css';
+import React from "react";
+import "./Logo.css";
 
 interface LogoProps {
   small?: boolean;
@@ -7,13 +7,9 @@ interface LogoProps {
 
 const Logo = ({ small = false }: LogoProps) => {
   if (small) {
-    return (
-      <h1 className="logo logo--small">a</h1>
-    );
+    return <h1 className="logo logo--small">a</h1>;
   }
-  return (
-    <h1 className="logo">accountable</h1>
-  );
+  return <h1 className="logo logo--big">accountable</h1>;
 };
 
 export default Logo;

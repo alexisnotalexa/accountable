@@ -1,6 +1,22 @@
 .logo {
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 500;
   margin: 0;
+}
+
+.logo--big {
+  height: 30px;
+}
+
+.logo--big:hover::after {
+  height: 8px;
+  width: 98%;
+  content: "";
+  display: block;
+  background: rgba(237, 20, 61, 0.75);
+  margin-top: -12px;
+  margin-left: 6px;
+  animation: slideIn 500ms;
 }
 
 .logo--small {
@@ -13,4 +29,13 @@
   align-items: center;
   justify-content: center;
   padding-bottom: 5px;
+}
+
+@keyframes slideIn {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 98%;
+  }
 }

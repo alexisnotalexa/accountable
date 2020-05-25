@@ -9,6 +9,7 @@ function App() {
       <main>
         <aside>
           <Logo />
+          <Logo small />
           <nav>
             <span>Home</span>
           </nav>
