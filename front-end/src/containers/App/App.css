@@ -1,3 +1,11 @@
 .App {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
   text-align: center;
+}
+
+main {
+  display: flex;
+  height: 100%;
 }
