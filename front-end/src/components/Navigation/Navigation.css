@@ -1,4 +1,7 @@
 aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 8px;
 }
 
@@ -9,4 +12,45 @@ nav {
 
 .navigation__logo {
   padding: 24px;
+}
+
+.invite {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: darkblue;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.invite__circle {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.invite__circle--red {
+  width: 125px;
+  height: 125px;
+  background: crimson;
+  left: -15px;
+  top: -35px;
+}
+
+.invite__circle--green {
+  width: 50px;
+  height: 50px;
+  background: lightseagreen;
+  bottom: -15px;
+  right: 10px;
+}
+
+.invite__text {
+  width: 100%;
+  position: absolute;
+  color: white;
+  font-family: "Work Sans", sans-serif;
+  font-weight: 500;
+  z-index: 1;
 }
