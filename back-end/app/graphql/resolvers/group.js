@@ -77,7 +77,6 @@ module.exports = {
   Group: {
     members: async ({ members }) => {
       try {
-        console.log('test');
         return await User.find({ '_id': { $in: members }});
       } catch (error) {
         throw new Error(error);
