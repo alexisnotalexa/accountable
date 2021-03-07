@@ -14,6 +14,8 @@ module.exports = gql`
 
   input NewGroupInput {
     name: String!
+    description: String
+    members: [ID!]!
     createdBy: ID!
   }
 

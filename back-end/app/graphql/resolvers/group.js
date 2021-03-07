@@ -1,5 +1,7 @@
+const { model } = require('../../models/group');
 const Group = require('../../models/group');
-const GroupMember = require('../../models/groupMember');
+const User = require('../../models/user');
+const mongoose = require('mongoose');
 
 module.exports = {
   Query: {
@@ -17,21 +19,21 @@ module.exports = {
         throw new Error(error);
       }
     },
-    getGroupsByUserId: async (_, { userId }) => {
-      try {
-        let groupIds = await GroupMember.find({ userId });
-        groupIds = groupIds.map(group => group.groupId);
-        const groups = await Group.find({ _id: { $in: groupIds } });
-        return groups.map(group => ({
-          ...group._doc,
-          _id: group.id,
-          createdAt: new Date(group.createdAt).toISOString(),
-          updatedAt: new Date(group.updatedAt).toISOString()
-        }));
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
+    // getGroupsByUserId: async (_, { userId }) => {
+    //   try {
+    //     let groupIds = await GroupMember.find({ userId });
+    //     groupIds = groupIds.map(group => group.groupId);
+    //     const groups = await Group.find({ _id: { $in: groupIds } });
+    //     return groups.map(group => ({
+    //       ...group._doc,
+    //       _id: group.id,
+    //       createdAt: new Date(group.createdAt).toISOString(),
+    //       updatedAt: new Date(group.updatedAt).toISOString()
+    //     }));
+    //   } catch (error) {
+    //     throw new Error(error);
+    //   }
+    // },
     getGroupsCreatedByUser: async (_, { userId }) => {
       try {
         const groups = await Group.find({ createdBy: userId });
@@ -48,33 +50,37 @@ module.exports = {
   },
   Mutation: {
     // need to add authorization
-    addGroupMember: async (_, { groupId, userId }) => {
-      try {
-        const groupMember = await GroupMember.findOne({ groupId, userId });
-        if (groupMember) throw new Error('User already exists in this group.');
+    // addGroupMember: async (_, { groupId, userId }) => {
+    //   try {
+    //     const groupMember = await GroupMember.findOne({ groupId, userId });
+    //     if (groupMember) throw new Error('User already exists in this group.');
 
-        await GroupMember.create({
-          groupId,
-          userId
-        });
-        return true;
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
+    //     await GroupMember.create({
+    //       groupId,
+    //       userId
+    //     });
+    //     return true;
+    //   } catch (error) {
+    //     throw new Error(error);
+    //   }
+    // },
     createGroup: async (_, args) => {
       try {
-        const { name, createdBy } = args.group;
+        const { name, description, members, createdBy } = args.group;
+        const user = await User.findById(createdBy);
+        if (!user) throw new Error('No user found.');
+
+        // TODO: Need to check that all members are valid users
         const group = await Group.create({
           name,
+          description,
+          members,
           createdBy
         });
 
-        // Automatically add creator to new Group
-        await GroupMember.create({
-          groupId: group._id,
-          userId: createdBy
-        });
+        user.groups = [...user.groups, group._id];
+        await user.save();
+        
         return group;
       } catch (error) {
         throw new Error(error);
@@ -88,15 +94,15 @@ module.exports = {
         throw new Error(error);
       }
     },
-    removeGroupMember: async (_, { groupId, userId }) => {
-      try {
-        // TODO: Can't remove task creator
-        const result = await GroupMember.deleteOne({ groupId, userId });
-        return result.deletedCount === 1 ? true : false;
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
+    // removeGroupMember: async (_, { groupId, userId }) => {
+    //   try {
+    //     // TODO: Can't remove task creator
+    //     const result = await GroupMember.deleteOne({ groupId, userId });
+    //     return result.deletedCount === 1 ? true : false;
+    //   } catch (error) {
+    //     throw new Error(error);
+    //   }
+    // },
     updateGroup: async (_, { id, name }) => {
       try {
          return await Group.findByIdAndUpdate(id, { name }, { new: true });
@@ -104,5 +110,14 @@ module.exports = {
         throw new Error(error);
       }
     },
+  },
+  Group: {
+    members: async ({ members }) => {
+      try {
+        return await User.find({ '_id': { $in: members }});
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
   }
 };
