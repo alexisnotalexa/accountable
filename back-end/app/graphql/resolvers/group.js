@@ -1,7 +1,5 @@
-const { model } = require('../../models/group');
 const Group = require('../../models/group');
 const User = require('../../models/user');
-const mongoose = require('mongoose');
 
 module.exports = {
   Query: {
@@ -19,24 +17,9 @@ module.exports = {
         throw new Error(error);
       }
     },
-    // getGroupsByUserId: async (_, { userId }) => {
-    //   try {
-    //     let groupIds = await GroupMember.find({ userId });
-    //     groupIds = groupIds.map(group => group.groupId);
-    //     const groups = await Group.find({ _id: { $in: groupIds } });
-    //     return groups.map(group => ({
-    //       ...group._doc,
-    //       _id: group.id,
-    //       createdAt: new Date(group.createdAt).toISOString(),
-    //       updatedAt: new Date(group.updatedAt).toISOString()
-    //     }));
-    //   } catch (error) {
-    //     throw new Error(error);
-    //   }
-    // },
-    getGroupsCreatedByUser: async (_, { userId }) => {
+    getGroupsCreatedByUser: async (_, { id }) => {
       try {
-        const groups = await Group.find({ createdBy: userId });
+        const groups = await Group.find({ createdBy: id });
         return groups.map(group => ({
           ...group._doc,
           _id: group.id,
@@ -50,20 +33,6 @@ module.exports = {
   },
   Mutation: {
     // need to add authorization
-    // addGroupMember: async (_, { groupId, userId }) => {
-    //   try {
-    //     const groupMember = await GroupMember.findOne({ groupId, userId });
-    //     if (groupMember) throw new Error('User already exists in this group.');
-
-    //     await GroupMember.create({
-    //       groupId,
-    //       userId
-    //     });
-    //     return true;
-    //   } catch (error) {
-    //     throw new Error(error);
-    //   }
-    // },
     createGroup: async (_, args) => {
       try {
         const { name, description, members, createdBy } = args.group;
@@ -80,7 +49,7 @@ module.exports = {
 
         user.groups = [...user.groups, group._id];
         await user.save();
-        
+
         return group;
       } catch (error) {
         throw new Error(error);
@@ -88,24 +57,17 @@ module.exports = {
     },
     deleteGroup: async (_, { id }) => {
       try {
+        // TODO: Group can only be deleted by group creator
         const result = await Group.deleteOne({ _id: id });
         return result.deletedCount === 1 ? true : false;
       } catch (error) {
         throw new Error(error);
       }
     },
-    // removeGroupMember: async (_, { groupId, userId }) => {
-    //   try {
-    //     // TODO: Can't remove task creator
-    //     const result = await GroupMember.deleteOne({ groupId, userId });
-    //     return result.deletedCount === 1 ? true : false;
-    //   } catch (error) {
-    //     throw new Error(error);
-    //   }
-    // },
-    updateGroup: async (_, { id, name }) => {
+    updateGroup: async (_, { id, name, description }) => {
       try {
-         return await Group.findByIdAndUpdate(id, { name }, { new: true });
+        // TODO: Be able to add/remove group members?
+        return await Group.findByIdAndUpdate(id, { name, description }, { new: true });
       } catch (error) {
         throw new Error(error);
       }
