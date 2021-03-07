@@ -9,7 +9,7 @@ const isAdmin = combineResolvers(
   (_, args, { authUser: { role } }) =>
     role === 'admin'
       ? skip
-      : new ForbiddenError('You must be an admin to perform this action')
+      : new ForbiddenError('You must be an admin to perform this action.')
 );
 
 module.exports = {
