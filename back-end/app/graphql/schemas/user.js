@@ -16,6 +16,8 @@ module.exports = gql`
     lastName: String!
     email: String!
     password: String!
+    groups: [Group!]!
+    tasks: [Task!]!
     createdAt: String!
     updatedAt: String!
   }
@@ -33,7 +35,7 @@ module.exports = gql`
   }
 
   extend type Query {
-    getAllUsers: [User!]
+    getAllUsers: [User!]!
     getUser(id: ID!): User
   }
 

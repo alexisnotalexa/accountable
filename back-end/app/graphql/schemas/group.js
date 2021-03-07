@@ -4,7 +4,10 @@ module.exports = gql`
   type Group {
     _id: ID!
     name: String!
-    createdBy: ID!
+    description: String
+    members: [User!]!
+    tasks: [Task!]!
+    createdBy: User!
     createdAt: String!
     updatedAt: String!
   }

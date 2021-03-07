@@ -1,10 +1,18 @@
 const { gql } = require('apollo-server-express');
 
 module.exports = gql`
+  enum Status {
+    COMPLETE
+    INCOMPLETE
+  }
+
   type Task {
     _id: ID!
     description: String!
-    groupId: ID!
+    status: Status!
+    group: Group!
+    createdBy: User!
+    completedBy: [User!]!
     createdAt: String!
     updatedAt: String!
   }

@@ -9,7 +9,8 @@ const TaskSchema = new Schema({
   status: {
     type: String,
     default: 'incomplete',
-    enum: ['completed', 'incomplete']
+    enum: ['complete', 'incomplete'],
+    required: true
   },
   group: {
     type: mongoose.Schema.Types.ObjectId,
