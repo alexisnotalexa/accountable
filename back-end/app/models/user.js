@@ -28,6 +28,18 @@ const UserSchema = new Schema({
       message: 'Your password must be at least 6 characters.'
     }
   },
+  groups: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Group'
+    }
+  ],
+  tasks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Task'
+    }
+  ],
   role: {
     type: String,
     default: 'user',
@@ -54,7 +66,7 @@ UserSchema.pre('save', function(next) {
 });
 
 UserSchema.methods.comparePassword = async function(candidatePassword, cb) {
- return await bcrypt.compare(candidatePassword, this.password); 
+  return await bcrypt.compare(candidatePassword, this.password); 
 };
 
 module.exports = mongoose.model('User', UserSchema);

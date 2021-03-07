@@ -6,8 +6,24 @@ const GroupSchema = new Schema({
     type: String,
     required: true
   },
+  description: {
+    type: String
+  },
+  members: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ],
+  tasks: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Task'
+    }
+  ],
   createdBy: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   }
 }, { timestamps: true });

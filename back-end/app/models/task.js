@@ -6,10 +6,25 @@ const TaskSchema = new Schema({
     type: String,
     required: true
   },
-  groupId: {
+  status: {
     type: String,
-    required: true
-  }
+    default: 'incomplete',
+    enum: ['completed', 'incomplete']
+  },
+  group: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Group'
+  },
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  completedBy: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Task', TaskSchema);
