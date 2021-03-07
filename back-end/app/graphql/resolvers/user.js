@@ -1,6 +1,8 @@
 const { combineResolvers } = require('graphql-resolvers');
 const { isAdmin } = require('./authorization');
 const User = require('../../models/user');
+const Group = require('../../models/group');
+const Task = require('../../models/task');
 const jwt = require('jsonwebtoken');
 
 const createToken = (user, secret, expiresIn) => {
@@ -27,8 +29,7 @@ module.exports = {
     },
     getUser: async (_, { id }) => {
       try {
-        const user = await User.findOne({ _id: id });
-        return user;
+        return await User.findById(id);
       } catch (error) {
         throw new Error(error);
       }
@@ -71,6 +72,22 @@ module.exports = {
           role
         });
         return { token: createToken(user, secret, '5m') };
+      } catch (error) {
+        throw new Error(error);
+      }
+    }
+  },
+  User: {
+    groups: async ({ groups }) => {
+      try {
+        return await Group.find({ '_id': { $in: groups }});
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    tasks: async ({ tasks }) => {
+      try {
+        return await Task.find({ '_id': { $in: tasks }});
       } catch (error) {
         throw new Error(error);
       }

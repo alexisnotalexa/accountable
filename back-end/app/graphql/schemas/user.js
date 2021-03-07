@@ -2,7 +2,7 @@ const { gql } = require('apollo-server-express');
 
 module.exports = gql`
   type AuthPayload {
-    token: String
+    token: Token
     user: User
   }
 
@@ -37,6 +37,8 @@ module.exports = gql`
   extend type Query {
     getAllUsers: [User!]!
     getUser(id: ID!): User
+    # getUserTasks(id: ID!): [Task!]!
+    # getUserGroups(id: ID!): [Group!]!
   }
 
   extend type Mutation {

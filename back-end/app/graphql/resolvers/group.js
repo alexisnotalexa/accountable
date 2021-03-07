@@ -1,5 +1,6 @@
 const Group = require('../../models/group');
 const User = require('../../models/user');
+const Task = require('../../models/task');
 
 module.exports = {
   Query: {
@@ -77,6 +78,13 @@ module.exports = {
     members: async ({ members }) => {
       try {
         return await User.find({ '_id': { $in: members }});
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    tasks: async ({ tasks }) => {
+      try {
+        return await Task.find({ '_id': { $in: tasks }});
       } catch (error) {
         throw new Error(error);
       }

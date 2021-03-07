@@ -1,15 +1,10 @@
 const { gql } = require('apollo-server-express');
 
 module.exports = gql`
-  enum Status {
-    COMPLETE
-    INCOMPLETE
-  }
-
   type Task {
     _id: ID!
     description: String!
-    status: Status!
+    status: String!
     group: Group!
     createdBy: User!
     completedBy: [User!]!
@@ -20,17 +15,17 @@ module.exports = gql`
   input NewTaskInput {
     description: String!
     groupId: ID!
+    userId: ID!
   }
 
   extend type Query {
-    getAllTasksForGroup(groupId: ID!): [Task!]
-    getAllTasksForUser(userId: ID!): [Task!]
+    getTask(id: ID!): Task!
   }
 
   extend type Mutation {
     createTask(task: NewTaskInput): Task!
     updateTask(taskId: ID!, description: String!): Task!
-    updateTaskGroup(taskId: ID!, groupId: ID!): Task!
+    # updateTaskGroup(taskId: ID!, groupId: ID!): Task!
     deleteTask(id: ID!): Boolean!
   }
 `;
