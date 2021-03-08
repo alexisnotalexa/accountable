@@ -5,6 +5,13 @@ const task = require('../schemas/task');
 
 module.exports = {
   Query: {
+    getAllTasks: async () => {
+      try {
+        return await Task.find();
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
     getTask: async (_, { id }) => {
       try {
         return await Task.findById(id);

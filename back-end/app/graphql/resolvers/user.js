@@ -4,6 +4,7 @@ const User = require('../../models/user');
 const Group = require('../../models/group');
 const Task = require('../../models/task');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
 const createToken = (user, secret, expiresIn) => {
   const { id, email, role } = user;
@@ -16,13 +17,7 @@ module.exports = {
   Query: {
     getAllUsers: async () => {
       try {
-        const users = await User.find();
-        return users.map(user => ({
-          ...user._doc,
-          _id: user.id,
-          createdAt: new Date(user.createdAt).toISOString(),
-          updatedAt: new Date(user.updatedAt).toISOString()
-        }));
+        return await User.find();
       } catch (error) {
         throw new Error(error);
       }
@@ -72,6 +67,23 @@ module.exports = {
           role
         });
         return { token: createToken(user, secret, '5m') };
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    updateUser: async (_, args) => {
+      try {
+        const { userId, firstName, lastName, email, password } = args.user;
+        const user = await User.findById(userId);
+        if (!user) throw new Error('No user found.');
+
+        if (firstName) user.firstName = firstName;
+        if (lastName) user.lastName = lastName;
+        if (email) user.email = email;
+        if (password) user.password = password;
+        await user.save();
+
+        return user;
       } catch (error) {
         throw new Error(error);
       }

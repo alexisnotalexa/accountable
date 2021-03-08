@@ -34,16 +34,23 @@ module.exports = gql`
     password: String!
   }
 
+  input UpdateUserInput {
+    userId: ID!
+    firstName: String
+    lastName: String
+    email: String
+    password: String
+  }
+
   extend type Query {
     getAllUsers: [User!]!
     getUser(id: ID!): User
-    # getUserTasks(id: ID!): [Task!]!
-    # getUserGroups(id: ID!): [Group!]!
   }
 
   extend type Mutation {
     deleteUser(id: ID!): Boolean!
     signup(user: NewUserInput): Token!
     login(user: LoginUserInput): Token!
+    updateUser(user: UpdateUserInput): User!
   }
 `;

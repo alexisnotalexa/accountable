@@ -7,13 +7,7 @@ module.exports = {
     // need to add authorization
     getAllGroups: async () => {
       try {
-        const groups = await Group.find();
-        return groups.map(group => ({
-          ...group._doc,
-          _id: group.id,
-          createdAt: new Date(group.createdAt).toISOString(),
-          updatedAt: new Date(group.updatedAt).toISOString()
-        }));
+        return await Group.find();
       } catch (error) {
         throw new Error(error);
       }

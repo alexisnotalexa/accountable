@@ -19,6 +19,7 @@ module.exports = gql`
   }
 
   extend type Query {
+    getAllTasks: [Task!]!
     getTask(id: ID!): Task!
   }
 
