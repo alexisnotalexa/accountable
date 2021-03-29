@@ -1,22 +1,22 @@
-const { MongoClient } = require('mongodb');
+const mongoose = require('mongoose');
 const config = require('./config/config.json');
 const env = process.env.NODE_ENV || 'development';
 
 const URI = `mongodb+srv://${config[env].username}:${config[env].password}@accountable.ei8ox.mongodb.net/test?retryWrites=true&w=majority`;
+const OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true };
 
-const initialize = (dbName, dbCollectionName, successCB, failureCB) => {
-  MongoClient.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true }, (error, db) => {
-    if (error) {
-      console.log(`[MongoDB connection] ERROR: ${error}`);
-      failureCB(error);
-    } else {
-      const database = db.db(dbName);
-      const collection = database.collection(dbCollectionName);
-      console.log('[MongoDB connection] SUCCESS');
-
-      successCB(collection);
-    }
-  });
+const initialize = (app) => {
+  mongoose.connect(URI, OPTIONS)
+    .then(() => {
+        console.log('[MongoDB connection] SUCCESS');
+        app.listen(config[env].port, () => {
+            console.log(`[SERVER] Listening on ${config[env].port}`);
+        });
+    })
+    .catch(error => {
+        console.log(`[MongoDB connection] ERROR: ${error}`);
+        throw error;
+    });
 };
 
 module.exports = {

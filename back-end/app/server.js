@@ -1,12 +1,11 @@
 const { ApolloServer, AuthenticationError } = require('apollo-server-express');
 const config = require('./config/config.json');
 const cors = require('cors');
-const env = process.env.NODE_ENV || 'development';
+const db = require('./db');
 const express = require('express');
+const jwt = require('jsonwebtoken');
 const resolvers = require('./graphql/resolvers');
 const typeDefs = require('./graphql/schemas');
-const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken');
 
 // SERVER
 const app = express();
@@ -43,17 +42,4 @@ const server = new ApolloServer({
 server.applyMiddleware({ app, path: '/graphql' });
 
 // DATABASE
-const URI = `mongodb+srv://${config[env].username}:${config[env].password}@accountable.ei8ox.mongodb.net/test?retryWrites=true&w=majority`;
-const OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true };
-
-mongoose.connect(URI, OPTIONS)
-    .then(() => {
-        console.log('[MongoDB connection] SUCCESS');
-        app.listen(config[env].port, () => {
-            console.log(`[SERVER] Listening on ${config[env].port}`);
-        });
-    })
-    .catch(error => {
-        console.log(`[MongoDB connection] ERROR: ${error}`);
-        throw error;
-    });
+db.initialize(app);
