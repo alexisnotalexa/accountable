@@ -1,13 +1,18 @@
+const { combineResolvers } = require('graphql-resolvers');
+const { isAuthenticated } = require('./authorization');
 const Group = require('../../models/group');
 const User = require('../../models/user');
 const Task = require('../../models/task');
 
 module.exports = {
   Query: {
-    // need to add authorization
+    // TODO: Need to add authentication
     getAllGroups: async () => {
       try {
-        return await Group.find();
+        const results = await Group.find();
+        console.log(results);
+        return results;
+        // return await Group.find();
       } catch (error) {
         throw new Error(error);
       }
@@ -27,14 +32,18 @@ module.exports = {
     },
   },
   Mutation: {
-    // need to add authorization
+    // TODO: Need to add authentication
     createGroup: async (_, args) => {
       try {
         const { name, description, members, createdBy } = args.group;
         const user = await User.findById(createdBy);
         if (!user) throw new Error('No user found.');
 
-        // TODO: Need to check that all members are valid users
+        const membersFound = await User.find({ _id: { $in: members } });
+        if (membersFound.length !== members.length) {
+          throw new Error('You can only create a group with valid users.');
+        }
+
         const group = await Group.create({
           name,
           description,
@@ -50,15 +59,23 @@ module.exports = {
         throw new Error(error);
       }
     },
-    deleteGroup: async (_, { id }) => {
-      try {
-        // TODO: Group can only be deleted by group creator
-        const result = await Group.deleteOne({ _id: id });
-        return result.deletedCount === 1 ? true : false;
-      } catch (error) {
-        throw new Error(error);
+    deleteGroup: combineResolvers(
+      isAuthenticated,
+      async (_, { id }, { authUser }) => {
+        try {
+          const group = await Group.findById(id);
+          if (!group) throw new Error('No group found.');
+          if (group.createdBy.toString() !== authUser.id.toString()) {
+            throw new Error("Group can only be deleted by the group's creator.");
+          }
+          
+          const result = await group.deleteOne();
+          return result.deletedCount === 1;
+        } catch (error) {
+          throw new Error(error);
+        }
       }
-    },
+    ),
     updateGroup: async (_, { id, name, description }) => {
       try {
         // TODO: Be able to add/remove group members?

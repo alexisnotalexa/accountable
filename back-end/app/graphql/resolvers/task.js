@@ -5,6 +5,7 @@ const task = require('../schemas/task');
 
 module.exports = {
   Query: {
+    // TODO: Need to add authentication
     getAllTasks: async () => {
       try {
         return await Task.find();
@@ -21,6 +22,7 @@ module.exports = {
     }
   },
   Mutation: {
+    // TODO: Need to add authentication
     createTask: async (_, args) => {
       try {
         const { description, groupId, userId } = args.task;

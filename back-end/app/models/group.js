@@ -28,4 +28,15 @@ const GroupSchema = new Schema({
   }
 }, { timestamps: true });
 
+GroupSchema.pre('deleteOne', { document: true}, function(next) {
+  // Removes deleted group from the users created groups
+  this.model('User').updateOne(
+    { _id: this.createdBy },
+    { $pull: { groups: this._id }},
+    { multi: true },
+    next
+  );
+  // TODO: Need to delete any tasks associated to this group
+});
+
 module.exports = mongoose.model('Group', GroupSchema);
