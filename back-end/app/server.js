@@ -1,5 +1,4 @@
 const { ApolloServer, AuthenticationError } = require('apollo-server-express');
-const bodyParser = require('body-parser');
 const config = require('./config/config.json');
 const cors = require('cors');
 const env = process.env.NODE_ENV || 'development';
@@ -12,8 +11,8 @@ const jwt = require('jsonwebtoken');
 // SERVER
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 const isAuthorized = async req => {
@@ -44,8 +43,8 @@ const server = new ApolloServer({
 server.applyMiddleware({ app, path: '/graphql' });
 
 // DATABASE
-const URI = `mongodb+srv://${config[env].username}:${config[env].password}@accountable-ei8ox.mongodb.net/test?retryWrites=true&w=majority`;
-const OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false };
+const URI = `mongodb+srv://${config[env].username}:${config[env].password}@accountable.ei8ox.mongodb.net/test?retryWrites=true&w=majority`;
+const OPTIONS = { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true };
 
 mongoose.connect(URI, OPTIONS)
     .then(() => {
